@@ -312,6 +312,52 @@ h1, h2, h3, h4, h5, h6 {
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
 }
 
+.footer-heart {
+  color: #f43f5e;
+  display: inline-block;
+  margin: 0 2px;
+}
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.footer-social {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+  background: transparent;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  transition: background-color 0.15s ease,
+              color 0.15s ease,
+              border-color 0.15s ease;
+}
+
+.footer-social:hover {
+  color: #ffffff;
+  background-color: #315D9B;
+  border-color: #315D9B;
+}
+
+.footer-social svg {
+  width: 19px;
+  height: 19px;
+  display: block;
+}
+
+.footer-link svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
 .logo-badge {
   display: flex;
   align-items: center;

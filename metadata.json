@@ -1,0 +1,6 @@
+{
+  "name": "DBB | Customer Service & Support in Cebu",
+  "description": "DBB provides customer assistance and support for electric service-related concerns in Cebu City.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

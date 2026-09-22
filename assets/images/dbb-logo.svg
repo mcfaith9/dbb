@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <defs>
+    <filter id="subtle-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Blue Atomic Orbital Ellipses -->
+  <g fill="none" stroke="#2c5ebb" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Vertical ellipse -->
+    <ellipse cx="500" cy="500" rx="255" ry="435" />
+    <!-- Tilted ellipse 60 deg -->
+    <ellipse cx="500" cy="500" rx="255" ry="435" transform="rotate(60 500 500)" />
+    <!-- Tilted ellipse -60 deg -->
+    <ellipse cx="500" cy="500" rx="255" ry="435" transform="rotate(-60 500 500)" />
+  </g>
+
+  <!-- DBB Text with Gold Outer Stroke and Crimson Fill -->
+  <g font-family="'URW Bookman', 'Liberation Serif', 'Times New Roman', serif" font-weight="900" font-size="350" letter-spacing="-8" text-anchor="middle" dominant-baseline="central">
+    <!-- Gold border / stroke layer -->
+    <text x="500" y="515" fill="#e5b02e" stroke="#e5b02e" stroke-width="36" stroke-linejoin="round" stroke-linecap="round">DBB</text>
+    <!-- Bold Red fill layer -->
+    <text x="500" y="515" fill="#de2226" stroke="#de2226" stroke-width="6" stroke-linejoin="round">DBB</text>
+  </g>
+</svg>

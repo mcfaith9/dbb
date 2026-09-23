@@ -114,6 +114,7 @@ const CAREERS_DATA = [
 function initApp() {
   initNavbar();
   initCareers();
+  initLocationsCarousel();
   initFaqAccordion();
   initContactForm();
   initScrollEffects();
@@ -572,4 +573,295 @@ function escapeHtml(str) {
   const div = document.createElement('div');
   div.appendChild(document.createTextNode(str));
   return div.innerHTML;
+}
+
+/**
+ * 7. Responsive Locations Carousel (5 cards gallery)
+ * Supports desktop (3 cards), tablet (2 cards), mobile (1 card with touch swipe)
+ */
+function initLocationsCarousel() {
+  const wrapper = document.querySelector('.locations-carousel-wrapper');
+  const viewport = document.getElementById('locationsViewport');
+  const track = document.getElementById('locationsTrack');
+  const prevBtn = document.getElementById('locationsPrevBtn');
+  const nextBtn = document.getElementById('locationsNextBtn');
+  const dotsContainer = document.getElementById('locationsDots');
+
+  if (!viewport || !track) return;
+
+  const cards = Array.from(track.querySelectorAll('.location-card'));
+  const totalCards = cards.length;
+  if (totalCards === 0) return;
+
+  let currentIndex = 0;
+
+  function getVisibleCount() {
+    const width = window.innerWidth;
+    if (width > 1024) return 3;
+    if (width > 640) return 2;
+    return 1;
+  }
+
+  function getMaxIndex() {
+    const visibleCount = getVisibleCount();
+    return Math.max(0, totalCards - visibleCount);
+  }
+
+  function renderDots() {
+    if (!dotsContainer) return;
+    const maxIndex = getMaxIndex();
+    const numDots = maxIndex + 1;
+
+    if (dotsContainer.children.length !== numDots) {
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < numDots; i++) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'carousel-dot' + (i === currentIndex ? ' active' : '');
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', `Go to location slide ${i + 1} of ${numDots}`);
+        dot.setAttribute('aria-selected', String(i === currentIndex));
+        dot.addEventListener('click', () => {
+          currentIndex = i;
+          updateCarousel();
+        });
+        dotsContainer.appendChild(dot);
+      }
+    } else {
+      Array.from(dotsContainer.children).forEach((dot, i) => {
+        const isActive = i === currentIndex;
+        dot.classList.toggle('active', isActive);
+        dot.setAttribute('aria-selected', String(isActive));
+      });
+    }
+  }
+
+  function updateCarousel(animate = true) {
+    const maxIndex = getMaxIndex();
+    if (currentIndex > maxIndex) currentIndex = maxIndex;
+    if (currentIndex < 0) currentIndex = 0;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!animate || prefersReducedMotion) {
+      track.style.transition = 'none';
+    } else {
+      track.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+    }
+
+    const firstCard = cards[0];
+    if (firstCard) {
+      const cardRect = firstCard.getBoundingClientRect();
+      const style = window.getComputedStyle(track);
+      const gap = parseFloat(style.gap) || 24;
+      const step = cardRect.width + gap;
+      const offset = currentIndex * step;
+      track.style.transform = `translateX(-${offset}px)`;
+    }
+
+    if (prevBtn) {
+      prevBtn.disabled = currentIndex <= 0;
+      prevBtn.setAttribute('aria-disabled', String(currentIndex <= 0));
+    }
+    if (nextBtn) {
+      nextBtn.disabled = currentIndex >= maxIndex;
+      nextBtn.setAttribute('aria-disabled', String(currentIndex >= maxIndex));
+    }
+
+    renderDots();
+  }
+
+  // Button navigation
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCarousel();
+      }
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < getMaxIndex()) {
+        currentIndex++;
+        updateCarousel();
+      }
+    });
+  }
+
+  // Touch / Mobile Swiping
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchDeltaX = 0;
+  let isTouching = false;
+  let isSwiping = false;
+
+  viewport.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchDeltaX = 0;
+    isTouching = true;
+    isSwiping = false;
+  }, { passive: true });
+
+  viewport.addEventListener('touchmove', (e) => {
+    if (!isTouching) return;
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const diffX = currentX - touchStartX;
+    const diffY = currentY - touchStartY;
+
+    if (!isSwiping) {
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 8) {
+        isSwiping = true;
+        track.classList.add('is-dragging');
+      } else if (Math.abs(diffY) > 8) {
+        isTouching = false;
+        return;
+      }
+    }
+
+    if (isSwiping) {
+      touchDeltaX = diffX;
+      if (e.cancelable) e.preventDefault();
+
+      const firstCard = cards[0];
+      const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 300;
+      const gap = parseFloat(window.getComputedStyle(track).gap) || 24;
+      const baseOffset = currentIndex * (cardWidth + gap);
+
+      let dragX = diffX;
+      const maxIndex = getMaxIndex();
+      if ((currentIndex === 0 && diffX > 0) || (currentIndex === maxIndex && diffX < 0)) {
+        dragX = diffX * 0.3;
+      }
+
+      track.style.transition = 'none';
+      track.style.transform = `translateX(-${baseOffset - dragX}px)`;
+    }
+  }, { passive: false });
+
+  function endTouch() {
+    if (!isTouching) return;
+    isTouching = false;
+    track.classList.remove('is-dragging');
+
+    if (isSwiping) {
+      const threshold = 40;
+      const maxIndex = getMaxIndex();
+      if (touchDeltaX < -threshold && currentIndex < maxIndex) {
+        currentIndex++;
+      } else if (touchDeltaX > threshold && currentIndex > 0) {
+        currentIndex--;
+      }
+      updateCarousel();
+    }
+    isSwiping = false;
+  }
+
+  viewport.addEventListener('touchend', endTouch, { passive: true });
+  viewport.addEventListener('touchcancel', endTouch, { passive: true });
+
+  // Desktop Mouse Drag
+  let isMouseDown = false;
+  let mouseStartX = 0;
+  let mouseDeltaX = 0;
+  let hasDragged = false;
+
+  viewport.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return;
+    isMouseDown = true;
+    hasDragged = false;
+    mouseStartX = e.clientX;
+    mouseDeltaX = 0;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isMouseDown) return;
+    const diffX = e.clientX - mouseStartX;
+    if (!hasDragged && Math.abs(diffX) > 6) {
+      hasDragged = true;
+      track.classList.add('is-dragging');
+    }
+
+    if (hasDragged) {
+      mouseDeltaX = diffX;
+      const firstCard = cards[0];
+      const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 300;
+      const gap = parseFloat(window.getComputedStyle(track).gap) || 24;
+      const baseOffset = currentIndex * (cardWidth + gap);
+
+      let dragX = diffX;
+      const maxIndex = getMaxIndex();
+      if ((currentIndex === 0 && diffX > 0) || (currentIndex === maxIndex && diffX < 0)) {
+        dragX = diffX * 0.3;
+      }
+
+      track.style.transition = 'none';
+      track.style.transform = `translateX(-${baseOffset - dragX}px)`;
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!isMouseDown) return;
+    isMouseDown = false;
+    track.classList.remove('is-dragging');
+
+    if (hasDragged) {
+      const threshold = 50;
+      const maxIndex = getMaxIndex();
+      if (mouseDeltaX < -threshold && currentIndex < maxIndex) {
+        currentIndex++;
+      } else if (mouseDeltaX > threshold && currentIndex > 0) {
+        currentIndex--;
+      }
+      updateCarousel();
+    }
+  });
+
+  viewport.addEventListener('click', (e) => {
+    if (hasDragged) {
+      e.preventDefault();
+      e.stopPropagation();
+      hasDragged = false;
+    }
+  }, true);
+
+  // Keyboard Navigation
+  viewport.addEventListener('keydown', (e) => {
+    const maxIndex = getMaxIndex();
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCarousel();
+      }
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      if (currentIndex < maxIndex) {
+        currentIndex++;
+        updateCarousel();
+      }
+    }
+  });
+
+  // Window Resize
+  let resizeTimeout = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      updateCarousel(false);
+    }, 100);
+  }, { passive: true });
+
+  // Prevent navigation when placeholder link is clicked
+  track.querySelectorAll('a[href*="INSERT"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+    });
+  });
+
+  // Initial display setup
+  updateCarousel(false);
 }

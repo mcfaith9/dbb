@@ -1036,22 +1036,64 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   Our Locations Section
+   Our Locations Section & Responsive Carousel
    ========================================================================== */
-.locations-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
+.locations-carousel-wrapper {
+  position: relative;
+  width: 100%;
 }
 
-@media (max-width: 1024px) {
-  .locations-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-  }
+.locations-carousel-stage {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
 }
 
-.location-card {
+.locations-carousel-viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 8px 4px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y pinch-zoom;
+}
+
+.locations-carousel-viewport:active {
+  cursor: grabbing;
+}
+
+.locations-carousel-viewport:focus-visible {
+  outline: 3px solid var(--color-accent-blue);
+  outline-offset: 2px;
+}
+
+.locations-carousel-track {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.locations-carousel-track.is-dragging {
+  transition: none !important;
+  cursor: grabbing;
+}
+
+.locations-carousel-track.is-dragging iframe {
+  pointer-events: none !important;
+}
+
+/* Location Cards in Carousel */
+.locations-carousel-track .location-card {
+  flex: 0 0 calc((100% - (2 * 24px)) / 3);
+  min-width: calc((100% - (2 * 24px)) / 3);
+  max-width: calc((100% - (2 * 24px)) / 3);
   background-color: var(--color-bg-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -1062,7 +1104,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
-.location-card:hover {
+.locations-carousel-track .location-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
   border-color: var(--color-primary-light);
@@ -1114,6 +1156,38 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
 }
 
+.location-map-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  color: var(--color-text-muted);
+}
+
+.location-map-placeholder svg {
+  color: var(--color-primary);
+  opacity: 0.6;
+  margin-bottom: 10px;
+}
+
+.location-map-placeholder .placeholder-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
+.location-map-placeholder .placeholder-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+}
+
 .location-footer {
   padding: 20px 28px;
   background-color: #f8fafc;
@@ -1140,6 +1214,186 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-directions:hover .external-icon {
   transform: translate(2px, -2px);
+}
+
+/* Carousel Navigation Buttons */
+.carousel-nav-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--color-bg-surface);
+  border: 1.5px solid var(--color-border);
+  color: var(--color-primary-dark);
+  box-shadow: 0 2px 8px rgba(10, 31, 68, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: 5;
+}
+
+.carousel-nav-btn:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  transform: scale(1.06);
+  box-shadow: 0 4px 14px rgba(10, 31, 68, 0.18);
+}
+
+.carousel-nav-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.carousel-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.carousel-nav-btn:focus-visible {
+  outline: 3px solid var(--color-accent-blue);
+  outline-offset: 3px;
+}
+
+/* Pagination Dots */
+.carousel-pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background-color: #cbd5e1;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.carousel-dot:hover:not(.active) {
+  background-color: var(--color-primary-light);
+  transform: scale(1.2);
+}
+
+.carousel-dot.active {
+  background-color: var(--color-primary);
+  width: 26px;
+}
+
+.carousel-dot:focus-visible {
+  outline: 2px solid var(--color-accent-blue);
+  outline-offset: 3px;
+}
+
+/* Tablet Breakpoint: 2 cards visible */
+@media (max-width: 1024px) {
+  .locations-carousel-stage {
+    gap: 14px;
+  }
+
+  .locations-carousel-track {
+    gap: 20px;
+  }
+
+  .locations-carousel-track .location-card {
+    flex: 0 0 calc((100% - 20px) / 2);
+    min-width: calc((100% - 20px) / 2);
+    max-width: calc((100% - 20px) / 2);
+  }
+
+  .carousel-nav-btn {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* Mobile Breakpoint: 1 card visible, touch/swipe friendly, compact layout */
+@media (max-width: 640px) {
+  .locations-carousel-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .locations-carousel-stage {
+    display: contents;
+  }
+
+  .locations-carousel-viewport {
+    order: 1;
+    width: 100%;
+    flex: none;
+    padding: 4px 1px;
+  }
+
+  .locations-carousel-track {
+    gap: 16px;
+  }
+
+  .locations-carousel-track .location-card {
+    flex: 0 0 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .location-map-wrap {
+    height: 250px;
+  }
+
+  .location-header {
+    padding: 20px 20px 16px 20px;
+  }
+
+  .location-footer {
+    padding: 16px 20px;
+  }
+
+  /* Bottom navigation row on mobile: [ < ]  ● ○ ○ ○ ○  [ > ] */
+  .carousel-nav-btn {
+    width: 40px;
+    height: 40px;
+    margin-top: 18px;
+  }
+
+  .carousel-nav-prev {
+    order: 2;
+  }
+
+  .carousel-pagination-container {
+    order: 3;
+    margin: 18px 14px 0 14px;
+  }
+
+  .carousel-nav-next {
+    order: 4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .locations-carousel-track {
+    transition: none !important;
+  }
+  .carousel-dot {
+    transition: none !important;
+  }
+  .carousel-nav-btn {
+    transition: none !important;
+  }
 }
 
 /* ==========================================================================

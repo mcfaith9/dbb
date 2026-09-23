@@ -2304,7 +2304,7 @@ textarea.form-control {
   }
 
   .chat-bubble-1 {
-    top: -6px;
+    top: 60px;
     left: 4px;
   }
 
@@ -2314,11 +2314,13 @@ textarea.form-control {
   }
 
   .chat-bubble-3 {
-    display: none;
+    top: 126px;
+    bottom: auto;
+    right: 4px;
   }
 
   .chat-bubble-4 {
-    bottom: 22px;
+    bottom: 75px;
     left: 4px;
   }
 

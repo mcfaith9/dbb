@@ -563,12 +563,13 @@ h1, h2, h3, h4, h5, h6 {
   flex-wrap: wrap;
 }
 
-/* Modern Illustration Canvas */
+/* Modern Illustration Canvas & Hero Visual */
 .hero-visual {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .illustration-card {
@@ -578,13 +579,142 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: 32px 28px;
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 20px 32px -10px rgba(10, 31, 68, 0.08), 0 10px 16px -4px rgba(10, 31, 68, 0.04);
   position: relative;
 }
 
-.hero-svg-wrapper {
+.hero-image {
   width: 100%;
   height: auto;
+  border-radius: var(--radius-lg);
+  display: block;
+  object-fit: cover;
+  user-select: none;
+}
+
+/* Floating Customer Support Chat Bubbles */
+.chat-bubble {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: var(--radius-full);
+  padding: 8px 14px;
+  box-shadow: 0 10px 20px -3px rgba(10, 31, 68, 0.08), 0 4px 6px -2px rgba(10, 31, 68, 0.04);
+  font-family: var(--font-family);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  white-space: nowrap;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
+}
+
+.chat-bubble-text {
+  letter-spacing: -0.01em;
+}
+
+.chat-bubble-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.chat-bubble-icon-blue {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent-blue);
+}
+
+.chat-bubble-icon-green {
+  background-color: var(--color-green-light);
+  color: var(--color-green);
+}
+
+.chat-bubble-icon-navy {
+  background-color: #f1f5f9;
+  color: var(--color-primary);
+}
+
+.chat-bubble-icon-amber {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.chat-bubble-1 {
+  top: 70px;
+  left: -18px;
+  animation: floatBubble1 5.5s ease-in-out infinite;
+}
+
+.chat-bubble-2 {
+  top: 24px;
+  right: -24px;
+  animation: floatBubble2 6.5s ease-in-out infinite 0.5s;
+}
+
+.chat-bubble-3 {
+  top: 40%;
+  right: -20px;
+  animation: floatBubble3 7s ease-in-out infinite 1.2s;
+}
+
+.chat-bubble-4 {
+  bottom: 120px;
+  left: -20px;
+  animation: floatBubble4 5.8s ease-in-out infinite 1.8s;
+}
+
+/* Subtle Floating Animations (4-7px vertical travel) */
+@keyframes floatBubble1 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes floatBubble2 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@keyframes floatBubble3 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes floatBubble4 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-bubble {
+    animation: none !important;
+  }
 }
 
 .hero-status-pill {
@@ -602,6 +732,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-primary-dark);
+  z-index: 3;
 }
 
 .status-indicator {
@@ -609,6 +740,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 10px;
   border-radius: 50%;
   background-color: var(--color-green);
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
@@ -1846,6 +1978,26 @@ textarea.form-control {
   .hero-headline {
     font-size: 2.75rem;
   }
+
+  .chat-bubble-1 {
+    top: -10px;
+    left: -10px;
+  }
+
+  .chat-bubble-2 {
+    top: 18px;
+    right: -12px;
+  }
+
+  .chat-bubble-3 {
+    top: 50%;
+    right: -10px;
+  }
+
+  .chat-bubble-4 {
+    bottom: 22px;
+    left: -10px;
+  }
   
   .services-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1930,6 +2082,64 @@ textarea.form-control {
     grid-template-columns: 1fr;
     gap: 40px;
     text-align: left;
+  }
+
+  .hero-visual {
+    width: 100%;
+    padding: 12px 0 20px 0;
+  }
+
+  .illustration-card {
+    max-width: 390px;
+    padding: 24px 20px;
+    margin: 0 auto;
+  }
+
+  .chat-bubble {
+    font-size: 0.75rem;
+    padding: 6px 11px;
+    gap: 6px;
+    box-shadow: 0 6px 14px -3px rgba(10, 31, 68, 0.08);
+  }
+
+  .chat-bubble-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .chat-bubble-icon svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .chat-bubble-1 {
+    top: -8px;
+    left: 8px;
+  }
+
+  .chat-bubble-2 {
+    top: 12px;
+    right: 8px;
+  }
+
+  .chat-bubble-3 {
+    top: auto;
+    bottom: 58px;
+    right: 8px;
+  }
+
+  .chat-bubble-4 {
+    bottom: 26px;
+    left: 8px;
+  }
+
+  .hero-status-pill {
+    bottom: -14px;
+    right: 50%;
+    transform: translateX(50%);
+    font-size: 0.75rem;
+    padding: 8px 14px;
+    white-space: nowrap;
   }
 
   .hero-headline {
@@ -2067,6 +2277,61 @@ textarea.form-control {
     font-size: 1.875rem;
   }
 
+  .hero-visual {
+    padding: 8px 0 16px 0;
+  }
+
+  .illustration-card {
+    max-width: 320px;
+    padding: 16px 12px 24px 12px;
+    border-radius: var(--radius-lg);
+  }
+
+  .chat-bubble {
+    font-size: 0.6875rem;
+    padding: 5px 9px;
+    gap: 5px;
+  }
+
+  .chat-bubble-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .chat-bubble-icon svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .chat-bubble-1 {
+    top: -6px;
+    left: 4px;
+  }
+
+  .chat-bubble-2 {
+    top: 10px;
+    right: 4px;
+  }
+
+  .chat-bubble-3 {
+    display: none;
+  }
+
+  .chat-bubble-4 {
+    bottom: 22px;
+    left: 4px;
+  }
+
+  .hero-status-pill {
+    bottom: -12px;
+    font-size: 0.6875rem;
+    padding: 6px 12px;
+    gap: 6px;
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .services-grid {
     grid-template-columns: 1fr;
   }
@@ -2078,6 +2343,35 @@ textarea.form-control {
 
   .section-title {
     font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .illustration-card {
+    max-width: 290px;
+    padding: 14px 10px 22px 10px;
+  }
+
+  .chat-bubble {
+    font-size: 0.625rem;
+    padding: 4px 8px;
+    gap: 4px;
+  }
+
+  .chat-bubble-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .chat-bubble-icon svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .hero-status-pill {
+    font-size: 0.625rem;
+    padding: 5px 10px;
+    bottom: -10px;
   }
 }
 

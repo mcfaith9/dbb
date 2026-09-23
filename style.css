@@ -908,8 +908,15 @@ h1, h2, h3, h4, h5, h6 {
    ========================================================================== */
 .locations-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+@media (max-width: 1024px) {
+  .locations-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
 }
 
 .location-card {
@@ -2048,14 +2055,6 @@ textarea.form-control {
     padding: 16px 20px;
   }
 
-  /* Scroll to top mobile */
-  .scroll-to-top {
-    bottom: 20px;
-    right: 20px;
-    width: 44px;
-    height: 44px;
-  }
-
   /* Footer */
   .footer-top {
     grid-template-columns: 1fr;
@@ -2103,6 +2102,7 @@ textarea.form-control {
   z-index: 990;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transform: translateY(16px);
   transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease, background-color var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -2110,10 +2110,11 @@ textarea.form-control {
 .scroll-to-top.visible {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
   transform: translateY(0);
 }
 
-.scroll-to-top:hover {
+.scroll-to-top.visible:hover {
   background-color: var(--color-primary-light);
   transform: translateY(-3px);
   box-shadow: 0 8px 20px rgba(10, 31, 68, 0.35);
@@ -2128,9 +2129,24 @@ textarea.form-control {
   outline-offset: 3px;
 }
 
+@media (max-width: 768px) {
+  .scroll-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
   .scroll-to-top {
     transition: opacity 0.1s linear, visibility 0.1s linear;
+    transform: none !important;
+  }
+  .scroll-to-top.visible:hover {
     transform: none !important;
   }
 }

@@ -111,7 +111,7 @@ const CAREERS_DATA = [
   }
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
+function initApp() {
   initNavbar();
   initCareers();
   initFaqAccordion();
@@ -119,7 +119,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollEffects();
   initScrollToTop();
   initSmoothScroll();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 /**
  * 1. Mobile Navigation & Scroll Header
@@ -501,9 +507,13 @@ function initScrollToTop() {
   const scrollBtn = document.getElementById('scrollToTopBtn');
   if (!scrollBtn) return;
 
+  const getScrollTop = () => {
+    return window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+  };
+
   const toggleScrollBtn = () => {
-    // Show button after user scrolls approximately 400px down
-    if (window.scrollY > 400) {
+    // Show button after user scrolls approximately 200–300px down (threshold 250px)
+    if (getScrollTop() > 250) {
       scrollBtn.classList.add('visible');
     } else {
       scrollBtn.classList.remove('visible');
@@ -519,6 +529,7 @@ function initScrollToTop() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({
       top: 0,
+      left: 0,
       behavior: prefersReducedMotion ? 'auto' : 'smooth'
     });
   });

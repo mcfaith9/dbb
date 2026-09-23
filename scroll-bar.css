@@ -1,0 +1,15 @@
+::-webkit-scrollbar {
+  width: 12px; /* Mostly for vertical scrollbars */
+  height: 12px; /* Mostly for horizontal scrollbars */
+}
+::-webkit-scrollbar-thumb { /* Foreground */
+  background: var(--scrollbar-foreground);
+  background: #1e5ba8;
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-track { /* Background */
+  background: var(--scrollbar-background);
+  background: transparent;
+}

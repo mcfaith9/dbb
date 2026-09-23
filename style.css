@@ -352,10 +352,17 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
 }
 
+.footer-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
 .footer-link svg {
-  width: 17px;
-  height: 17px;
-  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  margin-top: 2px;
 }
 
 .logo-badge {

@@ -412,20 +412,21 @@ function initFaqAccordion() {
     if (!questionBtn || !answer) return;
 
     questionBtn.addEventListener('click', () => {
-      const isActive = item.classList.contains('active');
+      const isOpen = item.classList.contains('is-open') || item.classList.contains('active');
 
-      // Optional: Close other active items for clean single-open accordion
+      // Close other active items for clean single-open accordion
       faqItems.forEach(otherItem => {
-        if (otherItem !== item && otherItem.classList.contains('active')) {
-          otherItem.classList.remove('active');
+        if (otherItem !== item && (otherItem.classList.contains('is-open') || otherItem.classList.contains('active'))) {
+          otherItem.classList.remove('is-open', 'active');
           const otherBtn = otherItem.querySelector('.faq-question');
           if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
         }
       });
 
       // Toggle clicked item
-      item.classList.toggle('active');
-      questionBtn.setAttribute('aria-expanded', String(!isActive));
+      item.classList.toggle('is-open', !isOpen);
+      item.classList.toggle('active', !isOpen);
+      questionBtn.setAttribute('aria-expanded', String(!isOpen));
     });
   });
 }

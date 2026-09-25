@@ -482,7 +482,29 @@ function initScrollEffects() {
 
   if (!sections.length || !navLinks.length) return;
 
+  const setHomeActive = () => {
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === '#home') {
+        link.classList.add('active');
+      } else if (link.getAttribute('href')?.startsWith('#')) {
+        link.classList.remove('active');
+      }
+    });
+  };
+
+  // Keep Home active when near top of page
+  window.addEventListener('scroll', () => {
+    if (window.scrollY < 150) {
+      setHomeActive();
+    }
+  }, { passive: true });
+
   const observer = new IntersectionObserver((entries) => {
+    if (window.scrollY < 150) {
+      setHomeActive();
+      return;
+    }
+
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const id = entry.target.getAttribute('id');
@@ -541,19 +563,50 @@ function initScrollToTop() {
  * 6. Smooth Scrolling for Internal Navigation Links
  */
 function initSmoothScroll() {
+  // If the user arrived with #home, scroll to top cleanly
+  if (window.location.hash === '#home') {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }
+
   const anchors = document.querySelectorAll('a[href^="#"]');
   anchors.forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
       if (!targetId || targetId === '#') return;
 
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Special handling for Home / Top of page navigation
+      if (targetId === '#home' || targetId === '#top') {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: prefersReducedMotion ? 'auto' : 'smooth'
+        });
+
+        // Set Home active in navbar
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+          if (link.getAttribute('href') === '#home') {
+            link.classList.add('active');
+          } else if (link.getAttribute('href')?.startsWith('#')) {
+            link.classList.remove('active');
+          }
+        });
+
+        if (window.history && window.history.pushState) {
+          window.history.pushState(null, '', window.location.pathname);
+        }
+        return;
+      }
+
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
         e.preventDefault();
         const headerOffset = 76;
         const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const offsetPosition = Math.max(0, elementPosition + window.pageYOffset - headerOffset);
 
         window.scrollTo({
           top: offsetPosition,

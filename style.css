@@ -2157,10 +2157,41 @@ textarea.form-control {
    12. Footer
    ========================================================================== */
 .site-footer {
+  position: relative;
   background-color: var(--color-primary-dark);
   color: #cbd5e1;
   padding: 64px 0 32px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 60px;
+}
+
+.footer-wave-wrapper {
+  position: absolute;
+  top: -59px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 60px;
+  overflow: hidden;
+  line-height: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.footer-wave-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    margin-top: 36px;
+    padding-top: 48px;
+  }
+  .footer-wave-wrapper {
+    top: -35px;
+    height: 36px;
+  }
 }
 
 .footer-top {

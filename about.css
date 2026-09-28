@@ -646,6 +646,17 @@
   position: relative;
 }
 
+/* Ensure footer follows the MobileAP section seamlessly without an empty white gap */
+.site-footer {
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    margin-top: 0;
+  }
+}
+
 .mobileap-downloads {
   display: flex;
   justify-content: center;

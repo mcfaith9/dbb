@@ -1,3 +1,5 @@
+@import "./scroll-trigger.css";
+
 /* ==========================================================================
    DBB Customer Service & Support - Cebu City
    Table of Contents:
@@ -614,6 +616,8 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
   user-select: none;
   line-height: 1;
+  --parallax-y: 0px;
+  will-change: transform;
 }
 
 .chat-bubble-text {
@@ -674,46 +678,47 @@ h1, h2, h3, h4, h5, h6 {
   animation: floatBubble4 5.8s ease-in-out infinite 1.8s;
 }
 
-/* Subtle Floating Animations (4-7px vertical travel) */
+/* Subtle Floating Animations combined with Scroll-Linked Depth */
 @keyframes floatBubble1 {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(var(--parallax-y, 0px));
   }
   50% {
-    transform: translateY(-6px);
+    transform: translateY(calc(var(--parallax-y, 0px) - 6px));
   }
 }
 
 @keyframes floatBubble2 {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(var(--parallax-y, 0px));
   }
   50% {
-    transform: translateY(6px);
+    transform: translateY(calc(var(--parallax-y, 0px) + 6px));
   }
 }
 
 @keyframes floatBubble3 {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(var(--parallax-y, 0px));
   }
   50% {
-    transform: translateY(-7px);
+    transform: translateY(calc(var(--parallax-y, 0px) - 7px));
   }
 }
 
 @keyframes floatBubble4 {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(var(--parallax-y, 0px));
   }
   50% {
-    transform: translateY(5px);
+    transform: translateY(calc(var(--parallax-y, 0px) + 5px));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .chat-bubble {
     animation: none !important;
+    transform: none !important;
   }
 }
 
@@ -2751,14 +2756,98 @@ textarea.form-control {
   }
 }
 
+/* ==========================================================================
+   15. Smooth Scroll-Linked Parallax & Ambient Depth
+   ========================================================================== */
+.parallax-element {
+  will-change: transform;
+}
+
+/* Floating decorative geometric shapes */
+.floating-bg-shape {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform;
+  user-select: none;
+  --parallax-y: 0px;
+}
+
+.shape-circle {
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(2, 132, 199, 0.14) 0%, rgba(2, 132, 199, 0.02) 75%);
+  border: 1.5px solid rgba(2, 132, 199, 0.2);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.06);
+  animation: floatShapeA 8.5s ease-in-out infinite;
+}
+
+.shape-square {
+  border-radius: 12px;
+  background: rgba(15, 61, 122, 0.04);
+  border: 1.5px solid rgba(15, 61, 122, 0.12);
+  box-shadow: 0 4px 12px rgba(10, 31, 68, 0.04);
+  animation: floatShapeB 10s ease-in-out infinite 0.8s;
+}
+
+.shape-triangle {
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 24px solid rgba(5, 150, 105, 0.18);
+  filter: drop-shadow(0 2px 4px rgba(5, 150, 105, 0.08));
+  animation: floatShapeC 9s ease-in-out infinite 1.5s;
+}
+
+/* Ambient Floating Keyframes for background shapes */
+@keyframes floatShapeA {
+  0%, 100% {
+    transform: translateY(var(--parallax-y, 0px)) rotate(0deg);
+  }
+  50% {
+    transform: translateY(calc(var(--parallax-y, 0px) - 8px)) rotate(6deg);
+  }
+}
+
+@keyframes floatShapeB {
+  0%, 100% {
+    transform: translateY(var(--parallax-y, 0px)) rotate(12deg);
+  }
+  50% {
+    transform: translateY(calc(var(--parallax-y, 0px) + 8px)) rotate(18deg);
+  }
+}
+
+@keyframes floatShapeC {
+  0%, 100% {
+    transform: translateY(var(--parallax-y, 0px)) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(calc(var(--parallax-y, 0px) - 6px)) rotate(-2deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  html {
+  *,
+  *::before,
+  *::after {
     scroll-behavior: auto !important;
   }
+
+  .parallax-element {
+    transform: none !important;
+  }
+
+  .floating-bg-shape {
+    animation: none !important;
+    transform: none !important;
+  }
+
   .scroll-to-top {
     transition: opacity 0.1s linear, visibility 0.1s linear;
     transform: none !important;
   }
+
   .scroll-to-top.visible:hover {
     transform: none !important;
   }

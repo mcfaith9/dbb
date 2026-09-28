@@ -3,11 +3,16 @@
  * Vanilla JavaScript Interactive Timeline Logic
  */
 
+import { initScrollMotion } from './scroll-motion.js';
+import { initScrollTrigger } from './scroll-trigger.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initTimelineAccordions();
   initTimelineCarousel();
   initScrollToTop();
+  initScrollMotion();
+  initScrollTrigger();
 });
 
 /**

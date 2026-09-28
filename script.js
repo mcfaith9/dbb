@@ -4,6 +4,9 @@
  * Works natively in any modern browser without frameworks or build tools.
  */
 
+import { initScrollMotion } from './scroll-motion.js';
+import { initScrollTrigger } from './scroll-trigger.js';
+
 // =========================================================================
 // DBB CAREERS DATA (Sample / Demo Data Structure)
 // Modify, add, or remove job opportunities in this array.
@@ -120,6 +123,8 @@ function initApp() {
   initScrollEffects();
   initScrollToTop();
   initSmoothScroll();
+  initScrollMotion();
+  initScrollTrigger();
 }
 
 if (document.readyState === 'loading') {
@@ -230,13 +235,13 @@ function initCareers() {
 function renderCareerCards(jobs, container) {
   if (!container || !Array.isArray(jobs)) return;
 
-  container.innerHTML = jobs.map(job => {
+  container.innerHTML = jobs.map((job, idx) => {
     const isOpen = job.status === 'open';
     const statusLabel = isOpen ? 'Open Position' : 'Closed';
     const statusClass = isOpen ? 'status-open' : 'status-closed';
 
     return `
-      <article class="job-card" data-job-id="${escapeHtml(job.id)}">
+      <article class="job-card scroll-reveal" data-anim="fade-up" data-delay="${idx * 80}" data-job-id="${escapeHtml(job.id)}">
         <div class="job-card-top">
           <span class="badge badge-dept">${escapeHtml(job.department)}</span>
           <span class="badge badge-status ${statusClass}">
@@ -295,6 +300,8 @@ function renderCareerCards(jobs, container) {
       </article>
     `;
   }).join('');
+
+  initScrollTrigger();
 }
 
 function openJobModal(job, triggerEl) {

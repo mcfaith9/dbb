@@ -40,8 +40,8 @@ const CAREERS_DATA = [
       'Ability to remain calm, courteous, and constructive during complex inquiries.'
     ],
     // PLACEHOLDER RECRUITMENT EMAIL: Replace with actual recruitment email address
-    applicationEmail: 'careers@example.com',
-    applicationInstructions: 'To apply, email your updated resume / CV to careers@example.com with the subject line "Application: Customer Service Representative - [Your Full Name]". Please specify your earliest available start date.'
+    applicationEmail: 'hr@dbbcsr.com',
+    applicationInstructions: 'To apply, email your updated resume / CV to hr@dbbcsr.com with the subject line "Application: Customer Service Representative - [Your Full Name]". Please specify your earliest available start date.'
   },
   {
     id: 'it-support',
@@ -52,7 +52,7 @@ const CAREERS_DATA = [
     level: 'Experienced',
     status: 'open', // 'open' | 'closed'
     shortDescription: 'Provide technical assistance, troubleshoot computer and network issues, and support internal systems and employees.',
-    fullDescription: 'The IT Support / Technical Staff member is responsible for maintaining reliable digital operations and hardware infrastructure at DBB\'s Cebu office. You will diagnose computer issues, support internal systems, maintain network stability, and assist team members with technical needs.',
+    fullDescription: 'The IT Support / Technical Staff member is responsible for maintaining reliable digital operations and hardware infrastructure at DBB\'s Bldg. Inoburan, City of Naga, Cebu. You will diagnose computer issues, support internal systems, maintain network stability, and assist team members with technical needs.',
     responsibilities: [
       'Provide technical assistance, troubleshoot computer and network issues, and support internal systems and employees.',
       'Set up, configure, and maintain desktop workstations, laptops, printers, and office peripherals.',
@@ -73,8 +73,8 @@ const CAREERS_DATA = [
       'Basic understanding of network security, firewalls, and data backup protocols.'
     ],
     // PLACEHOLDER RECRUITMENT EMAIL: Replace with actual recruitment email address
-    applicationEmail: 'careers@example.com',
-    applicationInstructions: 'To apply, send your resume and a summary of your technical background to careers@example.com with the subject line "Application: IT Support / Technical Staff - [Your Full Name]". Please include any relevant certifications or technical accomplishments.'
+    applicationEmail: 'hr@dbbcsr.com',
+    applicationInstructions: 'To apply, send your resume and a summary of your technical background to hr@dbbcsr.com with the subject line "Application: IT Support / Technical Staff - [Your Full Name]". Please include any relevant certifications or technical accomplishments.'
   },
   {
     id: 'admin-staff',
@@ -106,8 +106,8 @@ const CAREERS_DATA = [
       'Ability to handle multiple tasks with minimal supervision and adhere to deadlines.'
     ],
     // PLACEHOLDER RECRUITMENT EMAIL: Replace with actual recruitment email address
-    applicationEmail: 'careers@example.com',
-    applicationInstructions: 'To apply, please email your resume along with a brief cover note to careers@example.com with the subject line "Application: Administrative Staff - [Your Full Name]".'
+    applicationEmail: 'hr@dbbcsr.com',
+    applicationInstructions: 'To apply, please email your resume along with a brief cover note to hr@dbbcsr.com with the subject line "Application: Administrative Staff - [Your Full Name]".'
   }
 ];
 
